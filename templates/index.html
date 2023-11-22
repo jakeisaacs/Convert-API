@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert Data</title>
+    <!-- Include htmx script -->
+    <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.js"></script>
+</head>
+<body>
+
+    <h1>Data Conversion</h1>
+
+    <!-- Form with htmx attributes -->
+    <form hx-post="/convert/form" hx-target="#result" hx-swap="outerHTML">
+        <label for="data">Data:</label>
+        <textarea name="data" rows="5" cols="50"></textarea><br>
+        <label for="format_from">Format From:</label>
+        <input type="text" name="format_from" required><br>
+        <label for="format_to">Format To:</label>
+        <input type="text" name="format_to" required><br>
+        <button type="submit">Convert</button>
+    </form>
+
+    <!-- Placeholder for the result -->
+    <div id="result"></div>
+
+</body>
+</html>
