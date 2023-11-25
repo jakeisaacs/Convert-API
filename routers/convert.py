@@ -30,23 +30,25 @@ async def convert_data(request: ConvertRequest):
     format_to = request.format_to.lower()
 
     try:
-        if format_from == "csv":
-            df = pd.read_csv(StringIO(data))
-        elif format_from == "json":
-            df = pd.read_json(StringIO(data))
-        elif format_from == "html":
-            df = pd.read_html(data)[0]  # Assuming there's only one table in the HTML
-        else:
-            raise HTTPException(status_code=400, detail="Invalid format_from specified")
+        match format_from:
+            case "csv":
+                df = pd.read_csv(StringIO(data))
+            case "json":
+                df = pd.read_json(StringIO(data))
+            case "html":
+                df = pd.read_html(data)[0]  # Assuming there's only one table in the HTML
+            case _:
+                raise HTTPException(status_code=400, detail="Invalid format_from specified")
 
-        if format_to == "csv":
-            result_data = df.to_csv(index=False)
-        elif format_to == "json":
-            result_data = df.to_json(orient="records")
-        elif format_to == "html":
-            result_data = df.to_html(index=False, escape=False)
-        else:
-            raise HTTPException(status_code=400, detail="Invalid format_to specified")
+        match format_to:
+            case "csv":
+                result_data = df.to_csv(index=False)
+            case "json":
+                result_data = df.to_json(orient="records")
+            case "html":
+                result_data = df.to_html(index=False, escape=False)
+            case _:
+                raise HTTPException(status_code=400, detail="Invalid format_to specified")
 
         return {"converted_data": result_data}
 
