@@ -1,13 +1,10 @@
 
-from fastapi import APIRouter, HTTPException, Form, Request
+from fastapi import APIRouter, HTTPException, Form
 from fastapi.responses import HTMLResponse
-from fastapi.encoders import jsonable_encoder
 from fastapi.param_functions import Depends
 from pydantic import BaseModel
 import pandas as pd
 from io import StringIO
-from typing import Annotated
-import json
 
 router = APIRouter()
 

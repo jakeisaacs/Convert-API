@@ -3,13 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convert Data</title>
+    <title>Altdat</title>
     <!-- Include htmx script -->
     <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.js"></script>
 </head>
 <body>
 
-    <h1>Data Conversion</h1>
+    <div class="container mx-auto pt-12">
+        <h1 class="text-2xl">Weather Viewer</h1>
+        <div id="app" class="flex mt-8 gap-8">
+
+            <div>
+                <h2 class="text-lg">Enter a State</h2>
+                <form class="flex gap-2 mt-2">
+                    <input 
+                      type="text" 
+                      name="state" 
+                      placeholder="KY, NY, CA" 
+                      maxlength="2" 
+                      required 
+                      class="p-2 text-sm rounded border border-slate-400" />
+                    <button 
+                      class="bg-slate-800 rounded text-sm text-white px-4">
+                        Search
+                    </button>
+                </form>
+            </div>
+
+    </div>
 
     <!-- Form with htmx attributes -->
     <form hx-post="/convert/form" hx-target="#result" hx-swap="outerHTML">
