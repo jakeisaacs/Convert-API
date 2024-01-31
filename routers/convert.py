@@ -8,6 +8,12 @@ from io import StringIO
 
 router = APIRouter()
 
+class FilterRequest(BaseModel):
+    data: str
+    format_from: str
+    filter_column: str
+    filter_value: str
+    
 class ConvertRequest(BaseModel):
     data: str  # Input data for conversion
     format_from: str  # Original data format (csv, json, html)
@@ -66,6 +72,31 @@ async def convert_data_html(request: ConvertRequest):
 async def convert_data_form(request: ConvertRequest = Depends(ConvertRequest.as_form)):
     result = await convert_data(request)
     return result
+
+@router.post("/filter")
+async def filter_data(request: FilterRequest):
+    data = request.data
+    format_from = request.format_from.lower()
+    filter_column = request.filter_column.lower()
+    filter_value = request.filter_value.lower()
+    
+    try:
+        match format_from:
+            case "csv":
+                df = pd.read_csv(StringIO(data))
+            case "json":
+                df = pd.read_json(StringIO(data))
+            case "html":
+                df = pd.read_html(data)[0]  # Assuming there's only one table in the HTML
+            case _:
+                raise HTTPException(status_code=400, detail="Invalid format_from specified")
+        
+        result_data = df[df[filter_column == filter_value]]
+            
+        return {"converted_data": result_data}
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error during conversion: {str(e)}")
 
 # Old way... will probably delete
 # @router.post('/form')
